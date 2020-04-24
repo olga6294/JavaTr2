@@ -1,13 +1,11 @@
 package localdirectory;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor @Getter
 public class Directory {
+
     private String path;
 
-    public Directory(String path){
-        this.path = path;
-    }
-
-    public String getPath(){
-        return path;
-    }
 }

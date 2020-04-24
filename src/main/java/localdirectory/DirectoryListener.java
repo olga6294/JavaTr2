@@ -4,6 +4,8 @@ import file.FileController;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -27,10 +29,21 @@ public class DirectoryListener {
 
             WatchKey watchKey = watchService.take();
 
+            ExecutorService executorService = Executors.newFixedThreadPool(10);
+
             while(true){
-                for(WatchEvent<?> watchEvent : watchKey.pollEvents()){
-                    takeActionOnEvent(watchEvent);
-                }
+                        for(WatchEvent<?> watchEvent : watchKey.pollEvents()){
+
+                            executorService.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    takeActionOnEvent(watchEvent);
+                                }
+                            });
+                            executorService.shutdown();
+                        }
+
+
             }
 
         }catch(IOException ioException){
