@@ -1,19 +1,28 @@
 package dropbox;
 
+import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
-import file.File;
-
-import java.util.List;
+import com.dropbox.core.v2.files.ListFolderErrorException;
 
 public class DropboxContentProvider {
 
-    String ACCESS_TOKEN = "Qg2qypCGpxAAAAAAAAAAXSKy1K4CM4TSyKhmvEVBxFP2_3sSjf-BGYpRg3j4Ck6q";
-
     DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial");
-    DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+    DbxClientV2 client;
 
-    public List<File> listDirectoryContent(){
-        return null;
+    public DropboxContentProvider(String ACCESS_TOKEN){
+        client = new DbxClientV2(config, ACCESS_TOKEN);
+    }
+
+    public void listDirectoryContent(String path) {
+        try {
+            System.out.println(client.files().listFolder(path));
+        }catch(ListFolderErrorException listFolderErrorException){
+            listFolderErrorException.printStackTrace();
+            throw new RuntimeException();
+        }catch(DbxException dbxException){
+            dbxException.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 }
