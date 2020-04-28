@@ -3,7 +3,6 @@ package localdirectory;
 import file.FileController;
 import lombok.AllArgsConstructor;
 import metadata.MetaDataCollector;
-import metadata.MetaDataProvider;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -31,7 +30,6 @@ public class DirectoryListener {
             ExecutorService executorService = Executors.newFixedThreadPool(10);
 
             while (true) {
-
                 for (WatchEvent<?> watchEvent : watchKey.pollEvents()) {
 
                     executorService.execute(() -> takeActionOnEvent(watchEvent));
