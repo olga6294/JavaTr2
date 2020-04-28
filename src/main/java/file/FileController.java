@@ -7,7 +7,6 @@ import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.UploadErrorException;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -30,13 +29,10 @@ public class FileController {
             System.out.println(metadata.toStringMultiline());
         } catch (UploadErrorException ex) {
             System.err.println("Error uploading to Dropbox: " + ex.getMessage());
-            System.exit(1);
         } catch (DbxException ex) {
             System.err.println("DBXError uploading to Dropbox: " + ex.getMessage());
-            System.exit(1);
         } catch (IOException ex) {
-            System.err.println("Error reading from file");
-            System.exit(1);
+            ex.printStackTrace();
         }
     }
 
