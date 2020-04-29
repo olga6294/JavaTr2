@@ -20,6 +20,7 @@ public class Main {
 
         directoryListener.listen();
 
-        MetaDataProvider.showMetaData();
+        Thread thread = new Thread(new MetaDataProvider());
+        thread.run();
     }
 }

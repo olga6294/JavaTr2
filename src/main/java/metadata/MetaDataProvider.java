@@ -1,9 +1,9 @@
 package metadata;
 
-public class MetaDataProvider {
+public class MetaDataProvider implements Runnable{
 
-    public static void showMetaData(){
-
+    @Override
+    public void run() {
         while(true){
             try{
                 System.out.println("Files sent: "+MetaDataCollector.getInstance().getFilesSent());
