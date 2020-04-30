@@ -9,7 +9,8 @@ public class MetaDataProvider implements Runnable{
                 System.out.println("Files sent: "+MetaDataCollector.getInstance().getFilesSent());
                 Thread.sleep(10000);
             }catch (InterruptedException interruptedException){
-                interruptedException.getMessage();
+                System.out.println(interruptedException.getMessage());
+                throw new RuntimeException();
             }
         }
     }

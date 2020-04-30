@@ -8,19 +8,22 @@ import metadata.MetaDataProvider;
 
 public class Main {
 
+    private static final int ACCESS_KEY = 0;
+    private static final int DIRECTORY = 1;
+
     public static void main(String[] args){
 
-        FileController fileController = new FileController(args[0]);
-        DirectoryListener directoryListener = new DirectoryListener(fileController, args[1]);
-        FileUpdateService fileUpdateService = new FileUpdateService(fileController, args[1]);
+        FileController fileController = new FileController(args[ACCESS_KEY]);
+        DirectoryListener directoryListener = new DirectoryListener(fileController, args[DIRECTORY]);
+        FileUpdateService fileUpdateService = new FileUpdateService(fileController, args[DIRECTORY]);
 
         DropboxDirectoryContentProvider dropboxDirectoryContentProvider = new DropboxDirectoryContentProvider(args[0]);
 
         fileUpdateService.updateFiles(dropboxDirectoryContentProvider.getDropboxContent(), DirectoryContentProvider.provideDirectoryContent(args[1]));
 
-        directoryListener.listen();
-
         Thread thread = new Thread(new MetaDataProvider());
         thread.run();
+
+        directoryListener.listen();
     }
 }

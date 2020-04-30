@@ -1,10 +1,12 @@
 package metadata;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class MetaDataCollector {
 
     private static MetaDataCollector metaDataCollector;
 
-    private int filesSent;
+    private AtomicInteger filesSent = new AtomicInteger(0);
 
     public static synchronized MetaDataCollector getInstance(){
         if(metaDataCollector == null)
@@ -12,11 +14,11 @@ public class MetaDataCollector {
         return metaDataCollector;
     }
 
-    public synchronized void incrementFilesSent(){
-        filesSent++;
+    public int incrementFilesSent(){
+        return filesSent.addAndGet(1);
     }
 
     public int getFilesSent() {
-        return filesSent;
+        return filesSent.get();
     }
 }

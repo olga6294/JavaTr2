@@ -19,6 +19,7 @@ public class DirectoryListener {
 
     public void listen() {
 
+        System.out.println("TADAAA!!");
         try {
             WatchService watchService = FileSystems.getDefault().newWatchService();
             Path directoryPath = Paths.get(directory);
@@ -36,7 +37,6 @@ public class DirectoryListener {
 
                 }
             }
-            //executorService.shutdown();
 
         } catch (IOException ioException) {
             ioException.printStackTrace();
