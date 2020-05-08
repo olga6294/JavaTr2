@@ -6,6 +6,7 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import configproperties.ConfigProperties;
 import dropboxdirectory.DropboxDirectoryContentProvider;
 import email.EmailController;
 import email.SendgridEmail;
@@ -23,27 +24,20 @@ public class Main {
 
     public static void main(String[] args){
 
-        try {
-            Properties properties = new Properties();
-            FileInputStream propertiesFile = new FileInputStream("src/config.properties");
-            properties.load(propertiesFile);
-            propertiesFile.close();
+        ConfigProperties configProperties = new ConfigProperties("src/config.properties");
 
-            FileController fileController = new FileController(properties.getProperty("ACCESS_KEY"));
-            DirectoryListener directoryListener = new DirectoryListener(fileController, properties.getProperty("directory"));
-            FileUpdateService fileUpdateService = new FileUpdateService(fileController, properties.getProperty("directory"));
+        FileController fileController = new FileController(configProperties.getProperty("ACCESS_KEY"));
+        DirectoryListener directoryListener = new DirectoryListener(fileController, configProperties.getProperty("directory"));
+        FileUpdateService fileUpdateService = new FileUpdateService(fileController, configProperties.getProperty("directory"));
 
-            DropboxDirectoryContentProvider dropboxDirectoryContentProvider = new DropboxDirectoryContentProvider(properties.getProperty("ACCESS_KEY"));
+        DropboxDirectoryContentProvider dropboxDirectoryContentProvider = new DropboxDirectoryContentProvider(configProperties.getProperty("ACCESS_KEY"));
 
-            fileUpdateService.updateFiles(dropboxDirectoryContentProvider.getDropboxContent(), DirectoryContentProvider.provideDirectoryContent(properties.getProperty("directory")));
+        fileUpdateService.updateFiles(dropboxDirectoryContentProvider.getDropboxContent(), DirectoryContentProvider.provideDirectoryContent(configProperties.getProperty("directory")));
 
-            Thread thread = new Thread(new MetaDataProvider());
-            thread.start();
+        Thread thread = new Thread(new MetaDataProvider());
+        thread.start();
 
-            directoryListener.listen();
-        }catch(IOException ioe){
-            ioe.printStackTrace();
-            throw new RuntimeException();
-        }
+        directoryListener.listen();
+
     }
 }
