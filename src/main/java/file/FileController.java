@@ -5,6 +5,7 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.UploadErrorException;
+import email.SendgridEmailSender;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,6 +26,9 @@ public class FileController {
 
             FileMetadata metadata = client.files().uploadBuilder("/"+filename)
                     .uploadAndFinish(in);
+
+            SendgridEmailSender sendgridEmailSender = new SendgridEmailSender();
+            sendgridEmailSender.sendEmail("opasieczynska@gmail.com", "opasieczynska@gmail.com", "FILE UPDATE", metadata.toStringMultiline());
 
             System.out.println(metadata.toStringMultiline());
         } catch (UploadErrorException ex) {

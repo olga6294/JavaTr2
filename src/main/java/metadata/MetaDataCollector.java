@@ -14,8 +14,8 @@ public class MetaDataCollector {
         return metaDataCollector;
     }
 
-    public int incrementFilesSent(){
-        return filesSent.addAndGet(1);
+    public void incrementFilesSent() {
+        filesSent.addAndGet(1);
     }
 
     public int getFilesSent() {
